@@ -2,12 +2,27 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="{{ url_for('static', filename='favicon.ico') }}"
+    />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Product Catalog</title>
-    <script type="module" crossorigin src="/assets/index-CkF9dQW1.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-D3WA3YYF.css">
+
+    <script
+      type="module"
+      crossorigin
+      src="{{ url_for('static', filename='assets/index-CkF9dQW1.js') }}"
+    ></script>
+
+    <link
+      rel="stylesheet"
+      crossorigin
+      href="{{ url_for('static', filename='assets/index-D3WA3YYF.css') }}"
+    />
   </head>
+
   <body>
     <div id="root"></div>
   </body>
