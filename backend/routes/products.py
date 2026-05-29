@@ -91,3 +91,25 @@ def get_product_count():
     conn.close()
 
     return jsonify(result)
+
+
+@products.route("/summary", methods=["GET"])
+def get_product_summary():
+    conn = get_connection()
+    cur = conn.cursor(cursor_factory=RealDictCursor)
+
+    cur.execute(
+        """
+        SELECT
+            COUNT(*) AS total_products,
+            SUM(quantity) AS total_quantity
+        FROM products
+        """
+    )
+
+    result = cur.fetchone()
+
+    cur.close()
+    conn.close()
+
+    return jsonify(result)

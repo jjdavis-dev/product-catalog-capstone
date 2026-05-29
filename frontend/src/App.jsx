@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./index.css";
 
 function App() {
-  const API_URL = "http://127.0.0.1:5000/products/";
+  const API_URL = "/products/";
 
   const [products, setProducts] = useState([]);
   const [formData, setFormData] = useState({
