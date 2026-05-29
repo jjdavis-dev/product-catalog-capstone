@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { createChat } from "@n8n/chat";
+import "@n8n/chat/style.css";
 import "./index.css";
 
 function App() {
@@ -12,6 +14,26 @@ function App() {
   });
 
   const [editId, setEditId] = useState(null);
+
+  useEffect(() => {
+    createChat({
+      webhookUrl:
+        "https://automations.pathway4.click/webhook/23d93945-202c-4f18-880d-1b78b1952d24/chat",
+      mode: "window",
+      initialMessages: [
+        "Hello! I can help answer questions about the product catalog.",
+      ],
+      i18n: {
+        en: {
+          title: "Product Assistant",
+          subtitle: "Ask about inventory or product totals.",
+          footer: "",
+          getStarted: "New Conversation",
+          inputPlaceholder: "Ask about the catalog...",
+        },
+      },
+    });
+  }, []);
 
   const getProducts = async () => {
     const response = await fetch(API_URL);
