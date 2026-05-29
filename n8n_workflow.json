@@ -1,0 +1,142 @@
+{
+  "name": "johnny",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "mode": "webhook",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -192,
+        32
+      ],
+      "id": "9cf3c229-ca68-44c0-8295-6c8261bd54a4",
+      "name": "When chat message received",
+      "webhookId": "23d93945-202c-4f18-880d-1b78b1952d24"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are a product catalog assistant.\n\nUse the PostgreSQL tool to answer questions about the product catalog database.\n\nThe products table is located at catalog.products.\n\nThe columns are:\nid, name, price, quantity.\n\nAlways use live database data when answering product catalog questions.\n\nFor long product lists, summarize the result first and only show the first 5 products unless the user specifically asks for the full list.\n\nWhen asked for all products, format the answer in a short numbered list with name, price, and quantity."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        16,
+        -80
+      ],
+      "id": "4729d660-6b64-4e5f-ab70-9ce562ed7be3",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "global.amazon.nova-2-lite-v1:0",
+        "options": {
+          "maxTokensToSample": 500,
+          "temperature": 0.1
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAwsBedrock",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        112
+      ],
+      "id": "7470957e-d8f8-4d0a-8355-88230a737110",
+      "name": "AWS Bedrock Chat Model",
+      "credentials": {
+        "aws": {
+          "id": "Tn2LWYtMmwJF77yK",
+          "name": "AWS (IAM) account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "value": "catalog",
+          "mode": "list",
+          "cachedResultName": "catalog"
+        },
+        "table": {
+          "__rl": true,
+          "value": "products",
+          "mode": "list",
+          "cachedResultName": "products"
+        },
+        "returnAll": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.6,
+      "position": [
+        176,
+        128
+      ],
+      "id": "030e303e-f2f9-4527-bb71-d8e10f3e4dd8",
+      "name": "Query Catalog Table",
+      "credentials": {
+        "postgres": {
+          "id": "nqUvOGv8ZcPefLJJ",
+          "name": "Johnny Credentials"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AWS Bedrock Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Query Catalog Table": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "27961dd3-862c-4456-b311-4a7eae56bca2",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "bad5f4fed246c20a00a3b781cb3d2477de005a512727d1e49d9280b36fddc982"
+  },
+  "id": "FZrD7FEJqwH9PB4j",
+  "tags": []
+}
